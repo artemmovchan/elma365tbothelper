@@ -1,0 +1,11 @@
+version: '3'
+name: elma365exceltoword
+services:
+    elma365exceltoword:
+        image: movchan/elma365exceltoword:latest
+        build:
+            context: .
+        ports:
+            - 5000:5000
+        # volumes:
+        #     - ./app:/app
