@@ -4,11 +4,14 @@ from services import send_answer
 from services_monitoring import run_active_bots_monitoring_service
 from core import logo_log
 
-ELMA_URL = 'https://cybb4fnhq6ehs.elma365.ru'
-ELMA_TOKEN = '76855565-f566-47b6-9ae1-654c1ab3cb2f'
+ELMA_URL = 'https://ngvzc74rto7dw.elma365.ru'
+ELMA_TOKEN = '169e0c94-c140-4bb9-8e08-47bdb0cd5fc0'
 
-ELMA_BOTS_LIST = '/pub/v1/app/tgbot/bots/list'
-ELMA_BOT_EVENTS_CREATE = '/api/extensions/6d0bba44-347a-4982-aa04-242d66abb37d/script/create_bot_event'
+ELMA_BOTS_LIST = '/pub/v1/app/tgbots/bots/list'
+ELMA_BOT_EVENTS_LIST = '/pub/v1/app/tgbots/bot_events/list'
+ELMA_BOT_EVENTS_CREATE = '/api/extensions/8e2fc5e1-34f6-4890-b41e-96844f6a8449/script/create_bot_event'
+
+ELMA_BOT_NEXT_FIELD = '/api/extensions/8e2fc5e1-34f6-4890-b41e-96844f6a8449/script/get_next_bot_process_field'
 
 app = Flask(__name__)
 BOTS: list[TelegramBot] = []

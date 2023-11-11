@@ -28,13 +28,16 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     
 def handle_response(text: str, update: Update, bot_name: str) -> str:
     key, processed_text = get_bot_key_and_command(text)
-    print(key)
-    print(processed_text)
     if (key != None):
         create_bot_event_handler(key, processed_text, update, bot_name)
         return None
-        return f'Ключ: {key}\nТекст: {processed_text}'
-    return 'Не удалось распознать команду'
+    else:
+        has_active_processes, bot_event_id = check_for_active_bot_process(username=update.message.from_user.username)
+        if has_active_processes == True:
+            message = save_data_and_get_next_bot_process_field(bot_event_id=bot_event_id, message=text)
+            return str(message)
+        if has_active_processes == False or has_active_processes == None:
+            return 'Не удалось распознать команду'
 
 def get_bot_key_and_command(text: str) -> {str, str} | {None, None}:
     pattern = r'#(\w+)( .*)?'
@@ -73,3 +76,39 @@ async def send_answer(bot_token: str, chat_id: str, message_id: str, response_te
         await bot.send_message(chat_id=chat_id, text=response_text, reply_to_message_id=message_id)
     else:
         await bot.send_message(chat_id=chat_id, text=response_text)
+
+
+def check_for_active_bot_process(username: str):
+    from app import ELMA_URL, ELMA_TOKEN, ELMA_BOT_EVENTS_LIST
+    url = f'{ELMA_URL}{ELMA_BOT_EVENTS_LIST}'
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {ELMA_TOKEN}'
+    }
+    data = {'active': True, 'filter': {'tf': {'event_author_username': username, 'active_process': True}}}
+    data_json = json.dumps(data)
+    response = requests.post(url, data=data_json, headers=headers)
+    if response.status_code == 200:
+        result = response.json()['result']['result']
+        if len(result) == 0:
+            return False
+        else:
+            return True, result[0]['__id']
+    else:
+        return None
+
+def save_data_and_get_next_bot_process_field(bot_event_id: str, message: str):
+    from app import ELMA_URL, ELMA_TOKEN, ELMA_BOT_NEXT_FIELD
+    url = f'{ELMA_URL}{ELMA_BOT_NEXT_FIELD}'
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {ELMA_TOKEN}'
+    }
+    data = {'bot_event_id': bot_event_id, 'message': message}
+    data_json = json.dumps(data)
+    response = requests.post(url, data=data_json, headers=headers)
+    if response.status_code == 200:
+        result = response.json()['message']
+        return result
+    else:
+        return None

@@ -1,0 +1,26 @@
+Sub MagicMagic()
+    Dim SheetsNames() As Variant
+
+    Set Draft = ThisWorkbook.Sheets("Черновик")
+    LastRowDraft = Draft.Cells(Draft.Rows.Count, "D").End(xlUp).Row
+    SheetsNames = Array("Sharepoint", "Clinical Analytics", "Drug Dev", "Cenduit", "Inform", "Clario Imaging", "Radialogica", "eCOA", "Wingspan", "CTMS", "WLT")
+
+    For Each WSheet In ThisWorkbook.Sheets
+        For i = LBound(SheetsNames) To UBound(SheetsNames)
+            If WSheet.Name = SheetsNames(i) Then
+                Set CurrentSheet = ThisWorkbook.Sheets(SheetsNames(i))
+                On Error GoTo 0
+                For j = 2 To LastRowDraft
+                    DraftValue = Draft.Cells(j, "C").Value
+                    LastSheetRow = CurrentSheet.Cells(CurrentSheet.Rows.Count, "A").End(xlUp).Row
+                    For k = 2 To LastSheetRow
+                        SheetValue = CurrentSheet.Cells(k, "A").Value
+                        If LCase(DraftValue) = LCase(SheetValue) Then
+                            SheetValue.Cells(k, "J").Value = Draft.Cells(j, "A").Value
+                        End If
+                    Next k
+                Next j
+            End If
+        Next i
+    Next WSheet
+End Sub
