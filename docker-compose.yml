@@ -1,8 +1,18 @@
 version: '3'
-name: elma365exceltoword
+name: elma365microservices
 services:
-    elma365exceltoword:
-        image: movchan/elma365exceltoword:latest
+    elma365tbothelper:
+        image: movchan/elma365tbothelper:latest
+        environment:
+            - SERVICE_DEBUG=True
+            - ELMA_URL=https://ngvzc74rto7dw.elma365.ru
+            - ELMA_TOKEN=169e0c94-c140-4bb9-8e08-47bdb0cd5fc0
+            - ELMA_SERVICE_MODULE_UID=8e2fc5e1-34f6-4890-b41e-96844f6a8449
+            - ELMA_SERVICE_MODULE_ENDPOINT_CREATE_BOT_EVENT=create_bot_event
+            - ELMA_SERVICE_MODULE_ENDPOINT_BOT_NEXT_FIELD=get_next_bot_process_field
+            - ELMA_TGBOT_SECTION=tgbots
+            - ELMA_TGBOT_APPLICTION=bots
+            - ELMA_TGBOT_EVENT_APPLICTION=bot_events
         build:
             context: .
         ports:

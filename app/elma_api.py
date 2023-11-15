@@ -1,6 +1,7 @@
 import json
 import requests
 from env_variables import EnvironmentVariables as ev
+from core import Logger
 
 
 class ElmaAPI:
@@ -11,11 +12,10 @@ class ElmaAPI:
     
     def send_request(self, method: str, endpoint: str, data: dict | None) -> requests.Response:
         url = f'{self._base_url}{endpoint}'
-        if ev.get_service_debug() == True:
-            print('   [→] Sending request to ELMA')
-            print('       Method:', method)
-            print('       URL:', url)
-            print('       Data:', data)
+        Logger('INFO', 'Sending request to ELMA')
+        Logger('INFO', f' Method: {method}')
+        Logger('INFO', f' URL: {url}')
+        Logger('INFO', f' Data: {data}')
         headers = {
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {self._token}'
@@ -43,7 +43,7 @@ class ElmaAPI:
         if response.status_code == 200:
             return response.json()['result']['result']
         else:
-            print(f'   [x] Error getting list of {app_name} elements: {response.text}')
+            Logger('ERROR', f'Error getting list of {app_name} elements: {response.text}')
             return None
     
     def send_module_request(self, method: str, function_name: str, data: dict) -> requests.Response:

@@ -1,16 +1,14 @@
 from flask import Flask, request, jsonify
-import os
 
 from models import TelegramBot
 from services import send_answer, set_active_bots_service
 from services_monitoring import run_active_bots_monitoring_service
 from core import logo_log
 
-# Загружаем переменные окружения из файла .env
-os.environ['FLASK_ENV'] = 'production'
 
 app = Flask(__name__)
 BOTS: list[TelegramBot] = []
+
 
 @app.route("/health")
 def health():
@@ -60,7 +58,7 @@ async def set_active_bots():
 
 if __name__ == "__main__":
     logo_log()
-    print('Service: TG BOT HELPER')
+    print('SERVICE: TBOT HELPER')
     #run_active_bots_monitoring_service()
     set_active_bots_service()
     app.run(host='0.0.0.0', port=5000, debug=False)
