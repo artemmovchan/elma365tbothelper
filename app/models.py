@@ -1,15 +1,14 @@
 from telegram import Update
 from telegram.ext import Application, MessageHandler, filters
 import multiprocessing
-import os
-import signal
 
+from core import Logger
 from services import handle_message, error
 
 processes = []
 
 
-class TelegramBot():
+class TelegramBot:
     def __init__(self, name, token):
         self.is_running = True
         self.name = name
@@ -26,7 +25,7 @@ class TelegramBotManager:
         processes.append(process)
         process.start()
         self.bot.process = process
-        print(f'    [v] Strating process with name {process.name} for bot {self.bot.name}')
+        Logger('INFO', f'Starting process with name {process.name} for bot {self.bot.name}')
     
     def _run_bot(self):
         app = Application.builder().token(self.bot.token).build()
@@ -41,4 +40,4 @@ class TelegramBotManager:
             process.join()
         except:
             pass
-        print(f'    [x] Stopping process with name {process.name} for bot {self.bot.name}')
+        Logger('WARNING', f'Stopping process with name {process.name} for bot {self.bot.name}')
