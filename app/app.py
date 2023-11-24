@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 from models import TelegramBot
 from services import send_answer, set_active_bots_service
@@ -10,7 +10,7 @@ app = Flask(__name__)
 BOTS: list[TelegramBot] = []
 
 
-@app.route("/health")
+@app.route("/health", methods=['GET'])
 def health():
     return jsonify(
         status = 'UP'
