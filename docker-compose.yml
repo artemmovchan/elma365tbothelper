@@ -2,7 +2,7 @@ version: '3'
 name: elma365microservices
 services:
     elma365tbothelper:
-        image: movchan/elma365tbothelper:latest
+        image: movchan/elma365tbothelper:1.0
         environment:
             - SERVICE_DEBUG=True
             - ELMA_URL=https://ngvzc74rto7dw.elma365.ru

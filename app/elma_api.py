@@ -21,10 +21,10 @@ class ElmaAPI:
             'Authorization': f'Bearer {self._token}'
         }
         if data == None:
-            response = requests.request(method, url, headers=headers)
+            response = requests.request(method, url, headers=headers, verify=False)
         else:
             data_json = json.dumps(data)
-            response = requests.request(method, url, data=data_json, headers=headers)
+            response = requests.request(method, url, data=data_json, headers=headers, verify=False)
         return response
     
     def get_app_elements_list(self, section: str, app_name: str, filter: dict | None = None, status_code: list | None = None , active: bool = True, size: int = 100) -> dict:

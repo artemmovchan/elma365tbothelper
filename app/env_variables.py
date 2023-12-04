@@ -6,6 +6,7 @@ load_dotenv()
 
 class EnvironmentVariables:
         _SERVICE_DEBUG = os.environ.get("SERVICE_DEBUG")
+        _WEBHOOK = os.environ.get("WEBHOOK")
         _ELMA_URL = os.environ.get("ELMA_URL")
         _ELMA_TOKEN = os.environ.get("ELMA_TOKEN")
         _ELMA_SERVICE_MODULE_UID = os.environ.get("ELMA_SERVICE_MODULE_UID")
@@ -19,6 +20,11 @@ class EnvironmentVariables:
         @classmethod
         def get_service_debug(cls):
             return cls._SERVICE_DEBUG
+        
+        @classmethod
+        def get_webhook(cls):
+            return cls._WEBHOOK
+        
         @classmethod
         def get_elma_url(cls):
             return cls._ELMA_URL
